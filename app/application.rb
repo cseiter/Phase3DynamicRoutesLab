@@ -6,6 +6,16 @@ class Application
         resp = Rack::Response.new
         req = Rack::Request.new(env)
 
+        if req.path.match(/items/)
+            item_path = req.path.split("/items/").last
+            if item = @@items.find{|i| i.name == item_path}
+                resp.write item.price
+            else
+                resp.status = 400
+                resp.write "Item not found"
+            end
+        end
+
     end
 
 end
